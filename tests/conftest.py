@@ -36,7 +36,27 @@ def driver(request):
     yield d
     d.quit()
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=False)
 def reset_browser_state(driver):
     driver.delete_all_cookies()
     driver.get("about:blank")
+
+# playwright
+from playwright.sync_api import sync_playwright
+# 브라우저는 한 번만 띄우고
+@pytest.fixture(scope="session")
+def browser(request):
+    headless = request.config.getoption("--headless")
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=headless)
+        yield browser
+        browser.close()
+
+# 각 테스트(케이스)마다 깨끗한 세션/탭 사용
+@pytest.fixture
+def page(browser):
+    context = browser.new_context()
+    page = context.new_page()
+    yield page
+    context.close()
