@@ -1,119 +1,48 @@
 # Python Study for QA Automation
 
-Python 기초 문법, pytest 기반 테스트 자동화, CSV 데이터 기반 테스트, Selenium 기초 실습을 정리한 학습 저장소입니다.
-
-단순 문법 학습에 그치지 않고, QA 자동화와 연결될 수 있는 테스트 코드 작성 방식과 fixture, parameterize, 예외 처리, Selenium 웹 자동화 기초까지 함께 연습했습니다.
+Python 기초 문법부터 pytest 기반 테스트 자동화, Selenium · Playwright 웹 자동화까지  
+QA 자동화와 연결되는 테스트 코드 작성 방식을 학습한 저장소입니다.
 
 ---
 
 ## 학습 목적
 
-- Python 기초 문법 익히기
-- 함수와 클래스 기반 로직 구현 연습
-- pytest를 활용한 단위 테스트 작성
-- CSV 기반 테스트 데이터 로딩 실습
-- fixture / yield / scope 개념 이해
-- Selenium을 활용한 웹 자동화 기초 학습
+- pytest를 활용한 단위 테스트 작성 (assertion, fixture, parametrize, marker)
+- CSV 기반 테스트 데이터 로딩 및 동적 파라미터화
+- Selenium · Playwright를 활용한 웹 UI 자동화
+- Page Object Model 패턴 적용
 - QA 자동화 학습 기반 만들기
 
 ---
 
 ## 저장소 구성
 
-### `apps/`
-간단한 계산기 로직을 함수형 / 클래스형으로 구현한 코드가 포함되어 있습니다.
+**`apps/`** — 테스트 대상 애플리케이션
+- `mycalc.py` : add / subtract / divide 함수, 타입 검증, 예외 처리
+- `calculator.py` : Calculator 클래스 기반 구현
 
-- `mycalc.py`
-  - `add`, `subtract`, `divide` 함수 구현
-  - 숫자 타입 검증
-  - 0으로 나누기 예외 처리
+**`tests/`** — pytest 테스트 코드
+- `test_assertion.py` : truthy/falsy, 비교, 멤버십, pytest.approx, pytest.raises, pytest.warns
+- `test_calculator.py` : fixture 활용, 부동소수점 비교, 예외 테스트
+- `test_calculator_param.py` : parametrize, 스택 parametrize, CSV 데이터 로딩
+- `test_fixture_scope.py` : fixture scope (function / class / session)
+- `test_fixture_yield.py` : yield fixture로 setup / teardown 구현
+- `test_markers.py` : 커스텀 marker (smoke, regression, api, slow, xfail)
+- `test_login.py` / `test_signup.py` : Selenium 로그인 · 회원가입 자동화
+- `test_login_by_playwright.py` : Playwright + parametrize 로그인 정상/예외 검증, Page Object Model 적용
+- `test_dynamic_loading_by_playwright.py` : 동적 로딩 요소 대기 처리 5가지 방법 비교
+- `conftest.py` : calculator / driver / browser / page fixture 공유 설정
 
-- `calculator.py`
-  - `Calculator` 클래스로 계산 기능 구현
-  - 타입 검증 및 예외 처리 포함
+**`playwright/`** — Playwright 기초 실습
+- 브라우저 실행, 페이지 이동, 스크린샷 저장
+- 멀티 페이지 동시 제어 (Google + Naver)
 
----
-
-### `tests/`
-pytest를 사용한 테스트 코드가 포함되어 있습니다.
-
-- `test_calculator.py`
-  - fixture를 활용한 `Calculator` 인스턴스 테스트
-  - add / subtract / divide 검증
-  - `pytest.approx`를 사용한 부동소수점 비교
-  - `ZeroDivisionError` 예외 테스트
-
-- `test_calculator_param.py`
-  - `pytest.mark.parametrize` 기반 다중 테스트
-  - 예외 테스트
-  - stacked parameterize 예제
-  - CSV 파일 기반 테스트 데이터 로딩
-
-- `test_assertion.py`
-  - 다양한 assertion 문법 학습
-  - truthy / falsy / 비교 / 멤버십 / 동일성 검증
-  - `pytest.approx`, `pytest.raises`, `pytest.warns` 예제
-
-- `test_fixture_scope.py`
-  - fixture의 `scope="class"` 학습
-
-- `test_fixture_yield.py`
-  - `yield fixture`를 활용한 파일 열기/닫기 실습
-
-- `data_loader.py`
-  - CSV 파일을 읽어 테스트케이스를 로드하는 함수 구현
-  - `csv.DictReader`, `ast.literal_eval`, `Path` 활용
-
-- `conftest.py`
-  - 공통 fixture 정의
-  - `calculator_instance` fixture
-  - `pytest_generate_tests`를 통한 동적 파라미터화
-  - Selenium용 `driver` fixture와 브라우저 초기화 fixture 포함
+**`selenium/`** — Selenium 기초 실습
+- 페이지 이동, 요소 탐색, 명시적 대기 (WebDriverWait)
 
 ---
 
-### `selenium/`
-Selenium을 사용한 웹 자동화 기초 예제가 포함되어 있습니다.
 
-- `1.webpage_open.py`
-  - Python.org 접속 및 페이지 title 확인
+## 사용 기술
 
-- `2.page_navi.py`
-  - 페이지 이동, 뒤로가기, 앞으로가기, 새로고침
-
-- `3.find_elem.py`
-  - 검색창 요소 찾기 및 키 입력
-
-- `4.wait.py`
-  - `WebDriverWait`와 `expected_conditions`를 사용한 명시적 대기
-
----
-
-### `pytest.ini`
-pytest marker를 정리한 설정 파일입니다.
-
-예:
-- smoke
-- regression
-- slow
-- fast
-- db
-- ui
-- api
-
----
-
-## 학습 포인트
-
-이 저장소를 통해 다음 내용을 연습했습니다.
-
-- Python 함수와 클래스 구조 이해
-- 입력값 검증 및 예외 처리
-- pytest 기반 단위 테스트 작성
-- parameterize를 활용한 테스트 확장
-- fixture와 conftest를 활용한 공통 설정 분리
-- CSV 기반 테스트 데이터 관리
-- Selenium을 활용한 UI 자동화 기초
-- QA 자동화 학습과 연결되는 Python 테스트 코드 작성 방식 이해
-
----
+`Python` `pytest` `Selenium` `Playwright` `Page Object Model`
